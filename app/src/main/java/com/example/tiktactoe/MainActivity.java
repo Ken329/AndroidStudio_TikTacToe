@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -17,7 +18,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     TextView fScore, sScore, fName, sName;
-    ImageView g00, g01, g02, g10, g11, g12, g20, g21, g22;
+    ImageView g00, g01, g02, g10, g11, g12, g20, g21, g22, menu;
     LinearLayout l00, l01, l02, l10, l11, l12, l20, l21, l22;
 
     private boolean turn = true;
@@ -56,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         l21 = findViewById(R.id.lay21);
         l22 = findViewById(R.id.lay22);
 
+        menu = findViewById(R.id.menu);
+
         g00.setOnClickListener(this);
         g01.setOnClickListener(this);
         g02.setOnClickListener(this);
@@ -67,112 +70,118 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         g22.setOnClickListener(this);
 
         openDialog();
+
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomDialog("menu");
+            }
+        });
     }
     public void getAnswer(String character){
         if(character == "o") {
-            String name = fName.getText().toString();
-            String fix = name.substring(0, name.length() - 3);
+            String fix = fName.getText().toString();
             if (answer[0][0] == "o" && answer[0][1] == "o" && answer[0][2] == "o") {
                 setColor("00-02");
                 updateScore("first");
-                Toast.makeText(MainActivity.this, fix + " Won", Toast.LENGTH_LONG).show();
             } else if (answer[1][0] == "o" && answer[1][1] == "o" && answer[1][2] == "o") {
                 setColor("10-12");
                 updateScore("first");
-                Toast.makeText(MainActivity.this, fix + " Won", Toast.LENGTH_LONG).show();
             } else if (answer[2][0] == "o" && answer[2][1] == "o" && answer[2][2] == "o") {
                 setColor("20-22");
                 updateScore("first");
-                Toast.makeText(MainActivity.this, fix + " Won", Toast.LENGTH_LONG).show();
             } else if (answer[0][0] == "o" && answer[1][0] == "o" && answer[2][0] == "o") {
                 setColor("00-20");
                 updateScore("first");
-                Toast.makeText(MainActivity.this, fix + " Won", Toast.LENGTH_LONG).show();
             } else if (answer[0][1] == "o" && answer[1][1] == "o" && answer[2][1] == "o") {
                 setColor("01-21");
                 updateScore("first");
-                Toast.makeText(MainActivity.this, fix + " Won", Toast.LENGTH_LONG).show();
             } else if (answer[0][2] == "o" && answer[1][2] == "o" && answer[2][2] == "o") {
                 setColor("02-22");
                 updateScore("first");
-                Toast.makeText(MainActivity.this, fix + " Won", Toast.LENGTH_LONG).show();
             } else if (answer[0][0] == "o" && answer[1][1] == "o" && answer[2][2] == "o") {
                 setColor("00-22");
                 updateScore("first");
-                Toast.makeText(MainActivity.this, fix + " Won", Toast.LENGTH_LONG).show();
             } else if (answer[0][2] == "o" && answer[1][1] == "o" && answer[2][0] == "o") {
                 setColor("02-20");
                 updateScore("first");
-                Toast.makeText(MainActivity.this, fix + " Won", Toast.LENGTH_LONG).show();
             }
         }else{
-            String name = sName.getText().toString();
-            String fix = name.substring(0, name.length() -3);
+            String fix = sName.getText().toString();
             if(answer[0][0] == "x" && answer[0][1] == "x" && answer[0][2] == "x"){
                 setColor("00-02");
                 updateScore("second");
-                Toast.makeText(MainActivity.this, fix + " Won", Toast.LENGTH_LONG).show();
             }else if(answer[1][0] == "x" && answer[1][1] == "x" && answer[1][2] == "x"){
                 setColor("10-12");
                 updateScore("second");
-                Toast.makeText(MainActivity.this, fix + " Won", Toast.LENGTH_LONG).show();
             }else if(answer[2][0] == "x" && answer[2][1] == "x" && answer[2][2] == "x"){
                 setColor("20-22");
                 updateScore("second");
-                Toast.makeText(MainActivity.this, fix + " Won", Toast.LENGTH_LONG).show();
             }else if(answer[0][0] == "x" && answer[1][0] == "x" && answer[2][0] == "x") {
                 setColor("00-20");
                 updateScore("second");
-                Toast.makeText(MainActivity.this, fix + " Won", Toast.LENGTH_LONG).show();
             }else if(answer[0][1] == "x" && answer[1][1] == "x" && answer[2][1] == "x"){
                 setColor("01-21");
                 updateScore("second");
-                Toast.makeText(MainActivity.this, fix + " Won", Toast.LENGTH_LONG).show();
             }else if(answer[0][2] == "x" && answer[1][2] == "x" && answer[2][2] == "x"){
                 setColor("02-22");
                 updateScore("second");
-                Toast.makeText(MainActivity.this, fix + " Won", Toast.LENGTH_LONG).show();
             }else if(answer[0][0] == "x" && answer[1][1] == "x" && answer[2][2] == "x"){
                 setColor("00-22");
                 updateScore("second");
-                Toast.makeText(MainActivity.this, fix + " Won", Toast.LENGTH_LONG).show();
             }else if(answer[0][2] == "x" && answer[1][1] == "x" && answer[2][0] == "x"){
                 setColor("02-20");
                 updateScore("second");
-                Toast.makeText(MainActivity.this, fix + " Won", Toast.LENGTH_LONG).show();
             }
         }
     }
-    public void bottomDialog(){
+    public void bottomDialog(String action){
         BottomSheetDialog bottom = new BottomSheetDialog(this, R.style.BottomSheetDialogTheme);
         View v = getLayoutInflater().inflate(R.layout.score_dialog, findViewById(R.id.scoreContainer));
         ImageButton quit = v.findViewById(R.id.scoreDialogQuit);
         ImageButton restart = v.findViewById(R.id.scoreDialogRestart);
         ImageButton con = v.findViewById(R.id.scoreDialogContinue);
+        TextView conText = v.findViewById(R.id.scoreDialogConText);
 
-        bottom.setCancelable(false);
         bottom.setContentView(v);
         bottom.show();
 
-        quit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Quit Successfully", Toast.LENGTH_LONG).show();
-                System.exit(0);
-            }
-        });
+        if(action.equals("done")){
+            bottom.setCancelable(false);
+            conText.setText("Next Round");
+        }else if(action.equals("finish")){
+            conText.setText("Another Round");
+            bottom.setCancelable(false);
+        }
         restart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(action.equals("menu")){
+                    clear();
+                }else{
+                    restart();
+                }
                 bottom.dismiss();
-                restart();
             }
         });
         con.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(action.equals("done")){
+                    clear();
+                }else if(action.equals("finish")){
+                    Intent intent = new Intent(v.getContext(), MainActivity.class);
+                    startActivity(intent);
+                }
                 bottom.dismiss();
-                clear();
+            }
+        });
+        quit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Quit Successfully", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(v.getContext(), MainLogin.class);
+                startActivity(intent);
             }
         });
     }
@@ -209,13 +218,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     public void updateScore(String name){
         if(name.equals("first")){
+            String name1 = fName.getText().toString();
             int score = Integer.parseInt(fScore.getText().toString()) + 1;
             fScore.setText(String.valueOf(score));
+            if(score >= 3){
+                Toast.makeText(MainActivity.this, "Congratulation " + name1 + ", You won the Tournament", Toast.LENGTH_LONG).show();
+                bottomDialog("finish");
+            }else{
+                bottomDialog("done");
+                Toast.makeText(MainActivity.this, name1 + " Won", Toast.LENGTH_LONG).show();
+            }
         }else{
+            String name1 = sName.getText().toString();
             int score = Integer.parseInt(sScore.getText().toString()) + 1;
             sScore.setText(String.valueOf(score));
+            bottomDialog("done");
+            if(score >= 3){
+                Toast.makeText(MainActivity.this, "Congratulation " + name1 + ", You won the Tournament", Toast.LENGTH_LONG).show();
+                bottomDialog("finish");
+            }else{
+                bottomDialog("done");
+                Toast.makeText(MainActivity.this, name1 + " Won", Toast.LENGTH_LONG).show();
+            }
         }
-        bottomDialog();
     }
     public void setColor(String code){
         switch (code){
@@ -292,8 +317,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View v) {
                 dialog.dismiss();
                 Toast.makeText(MainActivity.this, "We will replace player 1 with Player X and player 2 with Player Y", Toast.LENGTH_LONG).show();
-                fName.setText("Player X : ");
-                sName.setText("Player Y : ");
+                fName.setText("Player X");
+                sName.setText("Player Y");
             }
         });
     }
